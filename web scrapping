@@ -1,0 +1,46 @@
+#https://www.amazon.com/Samsung-Galaxy-Unlocked-Smartphone-Renewed/dp/B07VPRRQBD/ref=lp_18637575011_1_1?srs=18637575011&ie=UTF8&qid=1569775136&sr=8-1
+
+from bs4 import BeautifulSoup
+import requests
+import csv
+import datetime
+import urllib3
+import xlsxwriter
+
+
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+
+url = 'https://www.amazon.com/Samsung-Galaxy-Unlocked-Smartphone-Renewed/dp/B07VPRRQBD/ref=lp_18637575011_1_1?srs=18637575011&ie=UTF8&qid=1569775136&sr=8-1'
+total_added = 0
+
+# def make_soup(url):
+http = urllib3.PoolManager()
+r = http.request("GET",url)
+soup = BeautifulSoup(r.data,'lxml')
+data = []
+content = soup.find_all('div', class_= 'a-row')
+# print(content)
+# for i in content:
+content_lis = soup.find_all('div', class_='a-expander-content reviewText review-text-content a-expander-partial-collapse-content')
+content_id = soup.find_all('div', class_='a-section review aok-relative')
+for j in content_lis:
+        content_lia = j.getText()
+        # print(content_lia)
+        for k in content_id:
+            content_ida = k['id']
+            # print(content_ida)
+
+
+
+
+
+
+    # content_lis = content_lis.getText()
+    # print(content_lis)
+    # content_id = i.find_all('div', class_='a-section review aok-relative')
+    # content_id = content_id['id']
+    # print(content_id)
+        data.append([content_ida,content_lia])
+
+print(len(data))
+# print(content_id['id'])
