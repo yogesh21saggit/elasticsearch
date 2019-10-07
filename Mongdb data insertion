@@ -1,0 +1,117 @@
+#https://www.amazon.com/Samsung-Galaxy-Unlocked-Smartphone-Renewed/dp/B07VPRRQBD/ref=lp_18637575011_1_1?srs=18637575011&ie=UTF8&qid=1569775136&sr=8-1
+
+from bs4 import BeautifulSoup
+import requests
+import csv
+import datetime
+import urllib3
+import xlsxwriter
+import pymongo
+
+
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+
+url = 'https://www.amazon.com/Samsung-Galaxy-Unlocked-Smartphone-Renewed/dp/B07VPRRQBD/ref=lp_18637575011_1_1?srs=18637575011&ie=UTF8&qid=1569775136&sr=8-1'
+total_added = 0
+
+# def make_soup(url):
+http = urllib3.PoolManager()
+r = http.request("GET",url)
+soup = BeautifulSoup(r.data,'lxml')
+data = []
+d = []
+dict = {}
+content = soup.find_all('div', class_= 'a-row')
+# print(content)
+# for i in content:
+content_lis = soup.find_all('div', class_='a-expander-content reviewText review-text-content a-expander-partial-collapse-content')
+content_id = soup.find_all('div', class_='a-section review aok-relative')
+
+
+# f = csv.writer(open('yog.csv', 'w'))
+# f.writerow(['Id', 'Description'])
+# myclient = pymongo.MongoClient("mongodb://localhost:27017/")
+#
+# mydb = myclient["mydatabase"]
+
+
+for j in content_lis:
+        content_lia = j.getText()
+        # print(content_lia)
+        for k in content_id:
+            content_ida = k['id']
+            # print(content_ida)
+
+
+
+
+
+
+    # content_lis = content_lis.getText()
+    # print(content_lis)
+    # content_id = i.find_all('div', class_='a-section review aok-relative')
+    # content_id = content_id['id']
+    # print(content_id)
+        data.append([content_ida , content_lia])
+        # f.writerow([content_ida, content_lia])
+        # data = data.strip('\n')
+
+for j,m in data:
+    dict = {
+        'ID': j,
+        'COMMENTS':m
+    }
+    d.append(dict)
+
+
+myclient = pymongo.MongoClient("mongodb://localhost:27017/")
+mydb = myclient["amazon"]
+mycol = mydb["customers"]
+x = mycol.insert_many(d)
+
+# print(d)
+# f.close()
+# print(data)
+# print(content_id['id'])
+
+# f= open('test','wb')
+# csv_writer = csv.writer(f)
+# for i in data:
+#     csv_writer.writerow(i)
+# f.close
+# with open("test.csv",'a',encoding = 'utf-8') as toWrite:
+#     writer = csv.writer(toWrite)
+#     writer.writerows(data)
+
+
+# myclient = pymongo.MongoClient("mongodb://localhost:27017/")
+#
+# mydb = myclient["mydatabase"]
+# print(myclient.list_database_names())
+# lis = {}
+# lisa = []
+# for i in range(len(data)):
+#     x = str(data[i])
+#     print (x)
+#     y = x.spilt(',')
+#     lis = {
+#         'ID': y[i],
+#         'comments': y[i + 1]
+#
+#     }
+# lisa.append(lis)
+    # print(x)
+
+
+
+
+
+# print(lisa)
+# x = str(data[0])
+# y = x.split(',')
+# print(y[0])
+
+# a= data[0].Split(",")
+# print(a[0])
+# print(a[1])
+# # dict= {}
